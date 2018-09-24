@@ -9,10 +9,8 @@ import getPageContext from '../lib/getPageContext';
  * STORE
  */
 import { Provider } from 'mobx-react'
-import { getSnapshot } from 'mobx-state-tree'
-import { initStore } from '../store/mobx'
-
-
+import withMobxStore from '../stores/mobx'
+import storeUser from '../stores/storeUser'
 
 
 /*
@@ -31,25 +29,25 @@ Router.events.on('routeChangeError', () => NProgress.done())
 
 
 
-
 class MyApp extends App {
   static async getInitialProps ({ Component, router, req, ctx }) {
     let pageProps = {}
-    const isServer = !!req
-    const store = initStore(isServer)
+    // const isServer = !!req
+    // const store = initStore(isServer)
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
 
-    return { pageProps, initialState: getSnapshot(store), isServer }
+    // return { pageProps, initialState: getSnapshot(store), isServer }
+    return { pageProps }
   }
 
 
   constructor(props) {
     super(props);
     this.pageContext = getPageContext();
-    this.store = initStore(props.isServer, props.initialState)
+    // this.store = initStore(props.isServer, props.initialState)
   }
 
   pageContext = null;
@@ -63,7 +61,7 @@ class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, mobxStore } = this.props;
     return (
       <Container>
         {/* Wrap every page in Jss and Theme providers */}
@@ -81,7 +79,7 @@ class MyApp extends App {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            <Provider store={this.store}>
+            <Provider store={mobxStore} storeUser={storeUser()}>
               <Component pageContext={this.pageContext} {...pageProps} />
             </Provider>
 
@@ -92,4 +90,4 @@ class MyApp extends App {
   }
 }
 
-export default MyApp;
+export default withMobxStore(MyApp);
