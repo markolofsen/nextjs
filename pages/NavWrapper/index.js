@@ -19,6 +19,12 @@ import {styles} from './styles'
 import { inject, observer } from 'mobx-react'
 
 
+/*
+ * COMPONENTS
+ */
+import ButtonsBar from './ButtonsBar'
+
+
 
 @inject('storeGlobal') @observer
 class ResponsiveDrawer extends React.Component {
@@ -43,18 +49,23 @@ class ResponsiveDrawer extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerToggle}
-              className={classes.navIconHide}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
-              {storeGlobal.light ? 'true' : 'false'}
-            </Typography>
+          <Toolbar classes={{
+            root: classes.ToolbarRoot
+          }}>
+            <div>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerToggle}
+                className={classes.navIconHide}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="title" color="inherit" noWrap>
+                {storeGlobal.light ? 'true' : 'false'}
+              </Typography>
+            </div>
+            <ButtonsBar />
           </Toolbar>
         </AppBar>
         <Hidden mdUp>
@@ -64,6 +75,7 @@ class ResponsiveDrawer extends React.Component {
             open={this.state.mobileOpen}
             onClose={this.handleDrawerToggle}
             classes={{
+              docked: classes.drawerDocked,
               paper: classes.drawerPaper,
             }}
             ModalProps={{
@@ -78,6 +90,7 @@ class ResponsiveDrawer extends React.Component {
             variant="permanent"
             open
             classes={{
+              docked: classes.drawerDocked,
               paper: classes.drawerPaper,
             }}
           >

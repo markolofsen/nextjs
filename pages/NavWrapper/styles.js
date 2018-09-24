@@ -8,7 +8,7 @@ const drawerWidth = 240;
 export const styles = theme => ({
 	root: {
     flexGrow: 1,
-    height: 440,
+    height: '100vh',
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
@@ -28,8 +28,12 @@ export const styles = theme => ({
     },
   },
   toolbar: theme.mixins.toolbar,
+	drawerDocked: {
+		height: '100%',
+	},
   drawerPaper: {
     width: drawerWidth,
+
     [theme.breakpoints.up('md')]: {
       position: 'relative',
     },
@@ -39,4 +43,21 @@ export const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
   },
+
+
+
+
+	ToolbarRoot: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		color: '#fff',
+		'& > div': {
+			display: 'flex',
+			alignItems: 'center',
+		}
+	},
+
+
+
 })
