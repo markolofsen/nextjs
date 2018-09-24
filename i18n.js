@@ -1,6 +1,12 @@
-const i18n = require('i18next')
+const i18next = require('i18next')
 const XHR = require('i18next-xhr-backend')
 const LanguageDetector = require('i18next-browser-languagedetector')
+const Cache = require('i18next-localstorage-cache');
+
+
+
+const i18nInstance = i18next
+const i18whitelist = ["en", "ru", "es", "de", "fr", "cn", "hi", "id"]
 
 const options = {
   fallbackLng: 'en',
@@ -10,8 +16,11 @@ const options = {
   ns: ['common'],
   defaultNS: 'common',
 
-  debug: false, // process.env.NODE_ENV !== 'production',
+  // debug: process.env.NODE_ENV !== 'production',
+  debug: false,
   saveMissing: true,
+
+  whitelist: i18whitelist,
 
   interpolation: {
     escapeValue: false, // not needed for react!!
@@ -23,41 +32,44 @@ const options = {
   }
 }
 
+
+
 // for browser use xhr backend to load translations and browser lng detector
 if (process.browser) {
-  i18n
-    .use(XHR)
-    // .use(Cache)
+  i18nInstance
+    // .use(XHR)
+    .use(Cache)
     .use(LanguageDetector)
 }
 
 // initialize if not already initialized
-if (!i18n.isInitialized) i18n.init(options)
+if (!i18nInstance.isInitialized) i18nInstance.init(options)
 
 // a simple helper to getInitialProps passed on loaded i18n data
-i18n.getInitialProps = (req, namespaces) => {
+const getInitialProps = (req, namespaces) => {
+  if (!namespaces) namespaces = i18nInstance.options.defaultNS
+  if (typeof namespaces === 'string') namespaces = [namespaces]
 
-  if(req.i18n) {
-    if (!namespaces) namespaces = i18n.options.defaultNS
-    if (typeof namespaces === 'string') namespaces = [namespaces]
+  req.i18n.toJSON = () => null // do not serialize i18next instance and send to client
 
-    req.i18n.toJSON = () => null // do not serialize i18next instance and send to client
-
-    const initialI18nStore = {}
-    req.i18n.languages.forEach((l) => {
-      initialI18nStore[l] = {}
-      namespaces.forEach((ns) => {
-        initialI18nStore[l][ns] = (req.i18n.services.resourceStore.data[l] || {})[ns] || {}
-      })
+  const initialI18nStore = {}
+  req.i18n.languages.forEach((l) => {
+    initialI18nStore[l] = {}
+    namespaces.forEach((ns) => {
+      initialI18nStore[l][ns] = (req.i18n.services.resourceStore.data[l] || {})[ns] || {}
     })
+  })
 
-    return {
-      i18n: req.i18n, // use the instance on req - fixed language on request (avoid issues in race conditions with lngs of different users)
-      initialI18nStore,
-      initialLanguage: req.i18n.language
-    }
+  return {
+    i18n: req.i18n, // use the instance on req - fixed language on request (avoid issues in race conditions with lngs of different users)
+    initialI18nStore,
+    initialLanguage: req.i18n.language
   }
-
 }
 
-module.exports = i18n
+module.exports = {
+  getInitialProps,
+  i18nInstance,
+  I18n: i18next.default,
+  i18whitelist,
+}

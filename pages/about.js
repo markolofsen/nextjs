@@ -43,7 +43,7 @@ class About extends React.Component {
     return (
       <div className={classes.root}>
 
-        <h1>TRANSLATION: {t('pureComponent')}</h1>
+        <h1>{t('buttons__done')}</h1>
 
         {this.props.store.hello ? 'true' : 'false'}
         <Typography variant="display1" gutterBottom>

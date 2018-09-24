@@ -7,6 +7,7 @@ const routes = module.exports = nextRoutes()
  * INDEX
  */
 routes.add('index', '/:lang', 'index')
+routes.add('about', '/:lang/about', 'about')
 // routes.add({
 //   name: 'index_tab',
 //   page: 'index_tab',

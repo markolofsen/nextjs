@@ -5,6 +5,7 @@ import flush from 'styled-jsx/server';
 import Helmet from 'react-helmet'
 
 
+
 class MyDocument extends Document {
   // static async getInitialProps (ctx) {
   //   const initialProps = await Document.getInitialProps(ctx)

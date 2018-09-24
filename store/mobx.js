@@ -2,11 +2,21 @@ import { types, applySnapshot } from 'mobx-state-tree'
 
 let store = null
 
+
+
+
+/*
+ * i18
+ */
+import { withI18next } from '../lib/withI18next'
+
+
 const Store = types
   .model({
     lastUpdate: types.Date,
     light: false,
     hello: true,
+    translate: false,
   })
   .actions((self) => {
     let timer
@@ -34,15 +44,17 @@ const Store = types
     return { start, stop, update, check }
   })
 
-export function initStore (isServer, snapshot = null) {
+export function initStore (isServer, snapshot = null, translate) {
   if (isServer) {
-    store = Store.create({ lastUpdate: Date.now() })
+    store = Store.create({ lastUpdate: Date.now(), translate })
   }
   if (store === null) {
-    store = Store.create({ lastUpdate: Date.now() })
+    store = Store.create({ lastUpdate: Date.now(), translate })
   }
+
   if (snapshot) {
     applySnapshot(store, snapshot)
   }
+
   return store
 }

@@ -13,6 +13,8 @@ import { getSnapshot } from 'mobx-state-tree'
 import { initStore } from '../store/mobx'
 
 
+
+
 /*
  * LOADING
  */
@@ -25,6 +27,8 @@ Router.events.on('routeChangeStart', (url) => {
 })
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
+
+
 
 
 
