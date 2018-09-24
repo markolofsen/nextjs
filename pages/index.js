@@ -26,9 +26,10 @@ const styles = theme => ({
 });
 
 
-@inject('store') @observer
+
 @withStyles(styles)
 @withI18next(['common'])
+@inject('store') @observer
 class IndexPage extends React.Component {
 
   static async getInitialProps () {
@@ -36,16 +37,18 @@ class IndexPage extends React.Component {
   }
 
   render() {
-    const { classes, t } = this.props;
+    const { classes, t, store } = this.props;
     return (
       <div>
 				<NavWrapper>
           <div>
-            {this.props.store.hello ? 'true' : 'false'}
+            {store.hello ? 'true' : 'false'}
             <br />
             {this.props.t('buttons__done')}
             <br />
-            Children are here
+            <div onClick={store.check}>
+              Children are here
+            </div>
           </div>
         </NavWrapper>
       </div>

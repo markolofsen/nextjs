@@ -16,7 +16,6 @@ const Store = types
     lastUpdate: types.Date,
     light: false,
     hello: true,
-    translate: false,
   })
   .actions((self) => {
     let timer
@@ -44,12 +43,12 @@ const Store = types
     return { start, stop, update, check }
   })
 
-export function initStore (isServer, snapshot = null, translate) {
+export function initStore (isServer, snapshot = null) {
   if (isServer) {
-    store = Store.create({ lastUpdate: Date.now(), translate })
+    store = Store.create({ lastUpdate: Date.now() })
   }
   if (store === null) {
-    store = Store.create({ lastUpdate: Date.now(), translate })
+    store = Store.create({ lastUpdate: Date.now() })
   }
 
   if (snapshot) {

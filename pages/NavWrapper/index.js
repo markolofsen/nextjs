@@ -11,6 +11,13 @@ import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 
+
+
+import { inject, observer } from 'mobx-react'
+
+
+
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -49,6 +56,9 @@ const styles = theme => ({
   },
 });
 
+
+
+@inject('store') @observer
 class ResponsiveDrawer extends React.Component {
   state = {
     mobileOpen: false,
@@ -59,7 +69,7 @@ class ResponsiveDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, store } = this.props;
 
     const drawer = (
       <div>
@@ -81,7 +91,7 @@ class ResponsiveDrawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              Responsive drawer
+              {store.hello ? 'true' : 'false'}
             </Typography>
           </Toolbar>
         </AppBar>
