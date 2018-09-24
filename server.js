@@ -13,7 +13,8 @@ const routes = require('./routes')
 
 const handler = routes.getRequestHandler(app)
 const i18nextMiddleware = require('i18next-express-middleware')
-const Backend = require('i18next-node-remote-backend')
+const BackendLocal = require('i18next-node-fs-backend')
+const BackendRemote = require('i18next-node-remote-backend')
 const { i18nInstance, i18whitelist } = require('./i18n')
 
 const ENV = process.env.NODE_ENV || 'development';
@@ -23,6 +24,8 @@ const isProdDev = ENV === 'production_dev';
 let apiDomain = 'http://127.0.0.1:8000';
 let port = 3000
 
+let Backend = isProduction ? BackendRemote : BackendLocal
+let LocalesPath = isProduction ? `${apiDomain}/api/{{lng}}/translations/common.json` : path.join(__dirname, '/locales/{{lng}}/{{ns}}.json')
 
 // This is where we cache our rendered HTML pages
 const ssrCache = new LRUCache({
@@ -44,7 +47,7 @@ i18nInstance
     preload: i18whitelist, // preload all languages
     ns: ['common'], // need to preload all the namespaces
     backend: {
-      loadPath: `${apiDomain}/api/{{lng}}/translations/common.json`,
+      loadPath: LocalesPath,
       // loadPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.json'),
       // addPath: path.join(__dirname, '/locales/{{lng}}/{{ns}}.missing.json')
     },
