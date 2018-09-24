@@ -20,7 +20,7 @@ import { inject, observer } from 'mobx-react'
 
 
 
-@inject('store') @observer
+@inject('storeGlobal') @observer
 class ResponsiveDrawer extends React.Component {
   state = {
     mobileOpen: false,
@@ -31,7 +31,7 @@ class ResponsiveDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme, store } = this.props;
+    const { classes, theme, storeGlobal } = this.props;
 
     const drawer = (
       <div>
@@ -53,7 +53,7 @@ class ResponsiveDrawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              {store.light ? 'true' : 'false'}
+              {storeGlobal.light ? 'true' : 'false'}
             </Typography>
           </Toolbar>
         </AppBar>

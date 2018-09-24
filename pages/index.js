@@ -25,7 +25,7 @@ import NavWrapper from './NavWrapper/'
 
 @withStyles(styles)
 @withI18next(['common'])
-@inject('store') @inject('storeUser') @observer
+@inject('storeGlobal') @inject('storeUser') @observer
 class IndexPage extends React.Component {
 
   static async getInitialProps () {
@@ -33,24 +33,28 @@ class IndexPage extends React.Component {
   }
 
   render() {
-    const { classes, t, store, storeUser } = this.props;
+    const { classes, t, storeGlobal, storeUser } = this.props;
     return (
       <div>
 				<NavWrapper>
           <div>
-            {store.light ? 'true' : 'false'}
+            {storeGlobal.light ? 'true' : 'false'}
             <br />
             {/* {this.props.t('buttons__done')} */}
             <br />
-            <div onClick={store.ch}>
+            <div onClick={storeGlobal.ch}>
               Children are here
             </div>
 
-            <p>{store.options}</p>
-            <p>{store.options2()}</p>
-            <button onClick={() => { store.x++; }}>x plus 1</button>
+            <p>{storeGlobal.options}</p>
+            <p>{storeGlobal.options2()}</p>
+            <button onClick={() => { storeGlobal.x++; }}>x plus 1</button>
 
+
+            <br />
             !{storeUser.username}!
+
+            <button onClick={() => { storeUser.changeName('Lesly') }}>Lesly</button>
 
           </div>
         </NavWrapper>

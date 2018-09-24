@@ -79,7 +79,7 @@ class MyApp extends App {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            <Provider store={mobxStore} storeUser={storeUser()}>
+            <Provider storeGlobal={mobxStore} storeUser={storeUser()}>
               <Component pageContext={this.pageContext} {...pageProps} />
             </Provider>
 
